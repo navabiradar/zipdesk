@@ -1,0 +1,47 @@
+# Binaries
+backend/bin/
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# Go
+*.test
+*.out
+vendor/
+
+# Environment
+.env
+.env.local
+.env.production
+*.env
+
+# Node
+node_modules/
+frontend/.next/
+frontend/out/
+frontend/build/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Test coverage
+coverage.out
+coverage.html
+
+# Data files
+backend/data/GeoLite2-City.mmdb
+
+# Fly.io
+.fly/
