@@ -208,7 +208,9 @@ func (s *Service) DeleteList(ctx context.Context, id string) error {
 
 // CreateCampaign creates a new campaign
 func (s *Service) CreateCampaign(ctx context.Context, workspaceID string, input CreateCampaignInput) (*Campaign, error) {
+	now := time.Now()
 	campaign := &Campaign{
+		ID:          uuid.New().String(),
 		WorkspaceID: workspaceID,
 		Name:        input.Name,
 		Subject:     input.Subject,
@@ -218,6 +220,8 @@ func (s *Service) CreateCampaign(ctx context.Context, workspaceID string, input 
 		Content:     input.Content,
 		ListID:      input.ListID,
 		Status:      CampaignStatusDraft,
+		CreatedAt:   now,
+		UpdatedAt:   now,
 	}
 
 	if err := s.repo.CreateCampaign(ctx, campaign); err != nil {

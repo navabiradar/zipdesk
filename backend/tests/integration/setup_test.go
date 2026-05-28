@@ -344,7 +344,7 @@ func (s *ZipDeskSuite) getCRMContact(email string) *crm.CRMContact {
 func mustJSON(t *testing.T, v any) []byte {
 	b, err := json.Marshal(v)
 	if err != nil {
-		t.Fatalf("mustJSON: %v", err)
+		t.Fatalf("mustJSON failed: %v", err)
 	}
 	return b
 }

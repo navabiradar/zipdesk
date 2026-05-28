@@ -7,15 +7,19 @@ import (
 // TestFlowFormToMailIntegration is THE critical test
 // This proves the hackathon demo works
 func (s *ZipDeskSuite) TestFlowFormToMailIntegration() {
-	s.T().Log("Testing Form Submit → Mail Contact → Events integration...")
+	s.T().Log("═══════════════════════════════════")
+	s.T().Log("CRITICAL INTEGRATION TEST")
+	s.T().Log("Form Submit → Mail Contact → Events")
+	s.T().Log("═══════════════════════════════════")
 
 	testEmail := "integration-test@example.com"
 
-	// STEP 1: Create form with email field
+	s.T().Log("\nStep 1: Creating form...")
 	form := s.createForm("Integration Test Waitlist")
 	formID := form["id"].(string)
+	s.T().Log("Step 1: Creating form... ✓")
 
-	// STEP 2: Add email field
+	s.T().Log("Step 2: Adding email field...")
 	s.addFieldsToForm(formID, []map[string]any{
 		{
 			"type":     "email",
@@ -28,12 +32,14 @@ func (s *ZipDeskSuite) TestFlowFormToMailIntegration() {
 			"required": false,
 		},
 	})
+	s.T().Log("Step 2: Adding email field... ✓")
 
-	// STEP 3: Publish form
+	s.T().Log("Step 3: Publishing form...")
 	slug := s.publishTestForm(formID)
 	s.NotEmpty(slug)
+	s.T().Log("Step 3: Publishing form... ✓")
 
-	// STEP 4: Submit form response
+	s.T().Log("Step 4: Submitting form...")
 	resp := s.submitForm(slug, map[string]any{
 		"email": testEmail,
 		"name":  "Integration Tester",
@@ -41,11 +47,13 @@ func (s *ZipDeskSuite) TestFlowFormToMailIntegration() {
 	s.Require().Equal(201, resp.StatusCode,
 		"Form submission must return 201",
 	)
+	s.T().Log("Step 4: Submitting form... ✓")
 
-	// STEP 5: Wait for async processing
+	s.T().Log("Step 5: Waiting 500ms...")
 	s.waitForAsync()
+	s.T().Log("Step 5: Waiting 500ms... ✓")
 
-	// STEP 6: Verify form.submitted event logged
+	s.T().Log("Step 6: form.submitted event found...")
 	events := s.getEvents("form.submitted")
 	s.Require().NotEmpty(
 		events,
@@ -55,8 +63,9 @@ func (s *ZipDeskSuite) TestFlowFormToMailIntegration() {
 	s.Equal(testEmail, payload["email"],
 		"event payload must contain submitted email",
 	)
+	s.T().Log("Step 6: form.submitted event found ✓")
 
-	// STEP 7: Verify mail contact created
+	s.T().Log("Step 7: Mail contact found...")
 	contact := s.getMailContact(testEmail)
 	s.Require().NotNil(
 		contact,
@@ -68,15 +77,21 @@ func (s *ZipDeskSuite) TestFlowFormToMailIntegration() {
 	s.Equal(testEmail, contact.Email,
 		"contact email must match submission",
 	)
+	s.T().Log("Step 7: Mail contact found ✓")
 
-	// STEP 8: Verify mail.contact_added event
+	s.T().Log("Step 8: mail.contact_added event found...")
 	contactEvents := s.getEvents("mail.contact_added")
 	s.Require().NotEmpty(
 		contactEvents,
 		"mail.contact_added event must be logged",
 	)
+	s.T().Log("Step 8: mail.contact_added event found ✓")
 
-	s.T().Log("CRITICAL INTEGRATION TEST PASSED: Form → Event Bus → Mail Contact")
+	s.T().Log("\n═══════════════════════════════════")
+	s.T().Log("CRITICAL INTEGRATION TEST PASSED ✓")
+	s.T().Log("Form → Event Bus → Mail Contact")
+	s.T().Log("All steps verified successfully")
+	s.T().Log("═══════════════════════════════════")
 }
 
 // TestFlowBlueprintExecution tests blueprint runs

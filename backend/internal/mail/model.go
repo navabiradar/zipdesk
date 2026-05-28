@@ -78,7 +78,7 @@ type Campaign struct {
 	FromName    string          `bun:"from_name,notnull"               json:"from_name"`
 	FromEmail   string          `bun:"from_email,notnull"              json:"from_email"`
 	Content     CampaignContent `bun:"content,type:jsonb"              json:"content"`
-	ListID      string          `bun:"list_id"                         json:"list_id"`
+	ListID      string          `bun:"list_id,nullzero"                json:"list_id"`
 	Status      CampaignStatus  `bun:"status,default:'draft'"          json:"status"`
 	ScheduledAt *time.Time      `bun:"scheduled_at"                    json:"scheduled_at,omitempty"`
 	SentAt      *time.Time      `bun:"sent_at"                         json:"sent_at,omitempty"`
